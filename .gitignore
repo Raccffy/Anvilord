@@ -1,4 +1,9 @@
+# Leftovers.
 __pycache__
+build
+builds
+dist
+anvilord.spec
 
 # Third-party licenses are provided for builds only.
 THIRDPARTY.md
