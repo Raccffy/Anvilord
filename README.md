@@ -16,6 +16,18 @@ You **can't** squash region file size using in-game options. Yes, you can [optim
 
 Using default settings, Anvilord quickly produces output, that is typically 2 - 6% smaller than the original world size. With Zopfli compression rate may increase by 1 - 2 %. Better results are achieved with natural world generation, large [Block entity](https://minecraft.wiki/w/Block_entity) data and with tall creations.
 
+## Installation
+
+### Without Python
+
+Download, extract and run binary from [Releases](https://github.com/Raccffy/Anvilord/releases) page. Only Windows 7+ 64-bit builds are avaliable.
+
+### With Python
+
+1. Install Python 3.8 or higher, download project's source code and extract it;
+2. Open Terminal, go to the extracted folder and install project requirements: `pip install -r requirements.txt`;
+3. Run "anvilord.py".
+
 ## Usage
 
 ```
