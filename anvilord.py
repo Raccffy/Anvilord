@@ -1,5 +1,5 @@
 """
-Anvilord is a utility for losslessly optimizing Minecraft worlds.
+Anvilord is a tool for lossless Minecraft world compression.
 """
 
 import os
@@ -162,7 +162,7 @@ if __name__ == "__main__":
     compression_scheme_mappings = {"gzip": 1, "zlib": 2, "uncompressed": 3}
 
     parser = argparse.ArgumentParser(prog="Anvilord",
-                                     description="Lossless recompression of Minecraft region files.")
+                                     description="Lossless Minecraft world compression.")
     parser.add_argument("-w", "--world",
                         help="Minecraft world.",
                         required=True)

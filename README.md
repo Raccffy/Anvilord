@@ -1,6 +1,6 @@
 # Anvilord
 
-Anvilord is a utility for losslessly optimizing Minecraft worlds.
+Anvilord is a tool for lossless Minecraft world compression.
 
 ## Features
 
