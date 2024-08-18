@@ -5,16 +5,16 @@ Anvilord is a tool for lossless Minecraft world compression.
 ## Features
 
 - Handles a wide range of versions. Starting with Beta 1.3 and ending with the latest snapshot;
-- Ability to recompress chunks using GZip, zlib and uncompressed (1.15.1+ only) schemes;
-- Includes [Zopfli, state of the art Deflate compression,](https://developers.googleblog.com/en/compress-data-more-densely-with-zopfli) for even smaller file size.
+- Ability to recompress chunks using [GZip](https://en.wikipedia.org/wiki/Gzip), [zlib](https://en.wikipedia.org/wiki/Zlib) and uncompressed (1.15.1+ only) schemes;
+- Includes [Zopfli, state of the art Deflate compression,](https://developers.googleblog.com/en/compress-data-more-densely-with-zopfli) for even smaller world size.
 
 ## How?
 
-Minecraft region file consists of chunks. Official Minecraft client uses [zlib](https://en.wikipedia.org/wiki/Zlib) for blocks and metadata compression. Of course, it needs to be done quickly or world saving will take a very long time.
+Region files is basically a chunk container. Every single chunk is compressed in order to save hard disk space. Of course, world saving needs to be done quickly or it will take a very long time.
 
-You **can't** compress your worlds using higher compression level in-game. That's why *Anvilord* was created. This iron-clad lord takes region files from your world, smashes them on his trusty anvil, squashes chunks with its strong hands and builds regions back. This process is *lossless*. Nothing gets lost.
+You **can't** squash region file size using in-game options. Yes, you can [optimize](https://minecraft.wiki/w/World_Options), but this is useful for world updates only. That's why *Anvilord* was created. This iron-clad lord takes region files from your world, smashes them on his trusty anvil, squashes chunks with its strong hands and builds regions back. This process is completely *lossless*.
 
-Using default settings, Anvilord quickly produces output, that is typically 2 - 6% smaller than the original world size. With Zopfli compression rate may increase by 1 - 2 %. Better compression rates are achieved with complex chunks (e.g. Natural world generation, large [Block entity](https://minecraft.wiki/w/Block_entity) data).
+Using default settings, Anvilord quickly produces output, that is typically 2 - 6% smaller than the original world size. With Zopfli compression rate may increase by 1 - 2 %. Better results are achieved with natural world generation, large [Block entity](https://minecraft.wiki/w/Block_entity) data and with tall creations.
 
 ## Usage
 
