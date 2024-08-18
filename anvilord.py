@@ -233,10 +233,10 @@ if __name__ == "__main__":
     else:
         arc = zipfile.ZipFile(args.output, "w")
 
-    print("Compressing non-region files.")
+    print("Packaging non-region files.")
     write_everything_but_region()
 
-    print("Region files compression started.")
+    print("Region files squashing started.")
 
     for i, j in enumerate(region_folders):
         files = os.listdir(j)
@@ -245,7 +245,7 @@ if __name__ == "__main__":
             valid_region = False
             path = j + "/" + j2
 
-            print(f'Compressing "{path}"...')
+            print(f'Squashing "{path}"...')
 
             try:
                 current_region = region.Region()
