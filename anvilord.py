@@ -64,7 +64,8 @@ def recompress_chunk(x):
         stats.skipped_chunks += 1
         return
     
-    print(f"\rRecompressing chunk {z_loc:>2}; {x_loc:>2}...", end="  ")
+    if args.verbose:
+        print(f"\rRecompressing chunk {z_loc:>2}; {x_loc:>2}...", end="  ")
 
     if args.zopfli_chunk:
         current_region.chunks[z_loc][x_loc].recompress_chunk_zopfli(compression_scheme_mappings[args.compression_scheme],
@@ -93,7 +94,8 @@ def region_files_integrity():
 
 
 def squash_region_file():
-    time_rs = time.monotonic()
+    if args.verbose:
+        time_rs = time.monotonic()
 
     source_region_sections     = 0
     compressed_region_sections = 0
@@ -107,22 +109,27 @@ def squash_region_file():
         diff = source_region_sections - compressed_region_sections
         print(f"Saved {diff * 4_096} bytes.")
         stats.sections_saved += diff
-    else:
+    elif args.verbose:
         print()
 
-    print("Archiving region file.")
+    if args.verbose:
+        print("Archiving region file.")
 
     arc.writestr(path,
                  current_region.compile_region_file(),
                  compress_type=zipfile.ZIP_DEFLATED,
                  compresslevel=args.compression_level)
 
-    time_re = time.monotonic()
-    print(f"Time elapsed: {display_time(time_re - time_rs)}")
+    if args.verbose:
+        time_re = time.monotonic()
+        print(f"Time elapsed: {display_time(time_re - time_rs)}")
 
 
 def write_everything_but_region():
     for i, j in enumerate(files):
+        if args.verbose:
+            print(f'Packing "{j}"...')
+
         with open(j, "rb") as f:
             d = f.read()
 
@@ -169,6 +176,9 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output",
                         help="Minecraft world ZIP file output.",
                         required=True)
+    parser.add_argument("-v", "--verbose",
+                        help="Enable debug messages.",
+                        action="store_true")
     parser.add_argument("--version",
                         action="version",
                         help="Show program's version and exit.",
