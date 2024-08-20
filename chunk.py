@@ -79,17 +79,21 @@ class Chunk:
         data = self.decompress_chunk()
 
         if target_compression_type == 1:
-            cobj = zopfli.ZopfliCompressor(zopfli.ZOPFLI_FORMAT_GZIP)
-            res = cobj.compress(data) + cobj.flush()
+            compression_format = zopfli.ZOPFLI_FORMAT_GZIP
         elif target_compression_type == 2:
-            cobj = zopfli.ZopfliCompressor(zopfli.ZOPFLI_FORMAT_ZLIB)
-            res = cobj.compress(data) + cobj.flush()
+            compression_format = zopfli.ZOPFLI_FORMAT_ZLIB
         elif target_compression_type == 3:
             res = data
         elif target_compression_type == 4:
             raise NotImplementedError("LZ4 compression is not implemented.")
         else:
             raise ValueError(f'Unknown compression scheme {target_compression_type}.')
+
+        cobj = zopfli.ZopfliCompressor(compression_format,
+                                       iterations=iterations,
+                                       block_splitting=block_splitting,
+                                       block_splitting_max=block_splitting_max)
+        res = cobj.compress(data) + cobj.flush()
 
         self.compression = target_compression_type
         self.data = res
