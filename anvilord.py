@@ -5,6 +5,7 @@ Anvilord is a tool for lossless Minecraft world compression.
 import os
 import argparse
 import time
+import datetime
 import zipfile
 
 import zopfli
@@ -115,7 +116,17 @@ def squash_region_file():
     if args.verbose:
         print("Archiving region file.")
 
-    arc.writestr(path,
+    if not args.disable_datetime_preservation:
+        date_time = os.path.getmtime(path)
+        date_time = datetime.datetime.fromtimestamp(date_time).timetuple()
+        infoobj = zopfli.ZipInfo(path, date_time=date_time)
+    else:
+        infoobj = zopfli.ZipInfo(path)
+
+    # This forces Zopfli to compress files instead of storing them.
+    infoobj.compress_type = 8
+
+    arc.writestr(infoobj,
                  current_region.compile_region_file(),
                  compress_type=zipfile.ZIP_DEFLATED,
                  compresslevel=args.compression_level)
@@ -126,14 +137,24 @@ def squash_region_file():
 
 
 def write_everything_but_region():
-    for i, j in enumerate(files):
+    for i, path in enumerate(files):
         if args.verbose:
-            print(f'Packing "{j}"...')
+            print(f'Packing "{path}"...')
 
-        with open(j, "rb") as f:
+        with open(path, "rb") as f:
             d = f.read()
 
-        arc.writestr(j,
+        if not args.disable_datetime_preservation:
+            date_time = os.path.getmtime(path)
+            date_time = datetime.datetime.fromtimestamp(date_time).timetuple()
+            infoobj = zipfile.ZipInfo(path, date_time=date_time)
+        else:
+            infoobj = zipfile.ZipInfo(path)
+
+        # This forces Zopfli to compress files instead of storing them.
+        infoobj.compress_type = 8
+
+        arc.writestr(infoobj,
                      d,
                      compress_type=zipfile.ZIP_DEFLATED,
                      compresslevel=args.compression_level)
@@ -194,6 +215,9 @@ if __name__ == "__main__":
                         action="store_true")
     general.add_argument("--disable-region-integrity",
                         help="Disable quick region file integrity check.",
+                        action="store_true")
+    general.add_argument("--disable-datetime-preservation",
+                        help="Disable modified datetime preservation.",
                         action="store_true")
     # Compression.
     compression.add_argument("-s", "--compression-scheme",
