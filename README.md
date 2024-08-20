@@ -31,14 +31,13 @@ Download, extract and run binary from [Releases](https://github.com/Raccffy/Anvi
 ## Usage
 
 ```
-usage: Anvilord [-h] -w WORLD -o OUTPUT [--version]
-                [--disable-quick-compression] [--disable-region-integrity]
-                [-s {gzip,zlib,uncompressed}] [-c {1,2,3,4,5,6,7,8,9}] [-z]
-                [--zopfli-output] [--zopfli-iterations ZOPFLI_ITERATIONS]
-                [--zopfli-disable-block-splitting]
+usage: Anvilord [-h] -w WORLD -o OUTPUT [-v] [--version] [--disable-quick-compression]
+                [--disable-region-integrity] [--disable-datetime-preservation]
+                [-s {gzip,zlib,uncompressed}] [-c {1,2,3,4,5,6,7,8,9}] [-z] [--zopfli-output]
+                [--zopfli-iterations ZOPFLI_ITERATIONS] [--zopfli-disable-block-splitting]
                 [--zopfli-block-splitting-max ZOPFLI_BLOCK_SPLITTING_MAX]
 
-Lossless recompression of Minecraft region files.
+Lossless Minecraft world compression.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -46,6 +45,7 @@ optional arguments:
                         Minecraft world.
   -o OUTPUT, --output OUTPUT
                         Minecraft world ZIP file output.
+  -v, --verbose         Enable debug messages.
   --version             Show program's version and exit.
 
 General:
@@ -53,15 +53,17 @@ General:
                         Disable skipping of one-sectioned chunks.
   --disable-region-integrity
                         Disable quick region file integrity check.
+  --disable-datetime-preservation
+                        Disable modified datetime preservation.
 
 Compression:
   -s {gzip,zlib,uncompressed}, --compression-scheme {gzip,zlib,uncompressed}
-                        Override chunk compression scheme. Default: "zlib".
-                        Uncompressed is supported for Minecraft 1.15.1+ only.
+                        Override chunk compression scheme. Default: "zlib". Uncompressed is
+                        supported for Minecraft 1.15.1+ only.
   -c {1,2,3,4,5,6,7,8,9}, --compression-level {1,2,3,4,5,6,7,8,9}
                         Set compression level for reference tools. Default: 9.
-  -z, --zopfli-chunk    Use Zopfli to compress Minecraft chunks. Brutally
-                        slower, but more effective.
+  -z, --zopfli-chunk    Use Zopfli to compress Minecraft chunks. Brutally slower, but more
+                        effective.
   --zopfli-output       Use Zopfli to compress ZIP output.
   --zopfli-iterations ZOPFLI_ITERATIONS
                         Set Zopfli iteration count. Default: 15.
