@@ -14,7 +14,7 @@ Region files is basically a chunk container. Every single chunk is compressed in
 
 You **can't** squash region file size using in-game options. Yes, you can [optimize](https://minecraft.wiki/w/World_Options), but this is useful for world updates only. That's why *Anvilord* was created. This iron-clad lord takes region files from your world, smashes them on his trusty anvil, squashes chunks with its strong hands and builds regions back. This process is completely *lossless*.
 
-Using default settings, Anvilord quickly produces output, that is typically 2 - 6% smaller than the original world size. With Zopfli compression rate may increase by 1 - 2 %. Better results are achieved with natural world generation, large [Block entity](https://minecraft.wiki/w/Block_entity) data and with tall creations.
+Using default settings, Anvilord quickly produces output, [that is typically 2 - 6% smaller than the original world size](https://github.com/Raccffy/Anvilord/wiki/Benchmark). With Zopfli compression rate may increase by 1 - 2 %. Better results are achieved with natural world generation, large [Block entity](https://minecraft.wiki/w/Block_entity) data and with tall creations.
 
 ## Installation
 
