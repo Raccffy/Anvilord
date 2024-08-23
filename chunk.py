@@ -33,13 +33,13 @@ class Chunk:
     def decompress_chunk(self):
         # GZip-compressed chunk.
         if self.compression == 1:
-            data = gzip.decompress(self.data)
+            return gzip.decompress(self.data)
         # Zlib-compressed chunk.
         elif self.compression == 2:
-            data = zlib.decompress(self.data)
+            return zlib.decompress(self.data)
         # Uncompressed.
         elif self.compression == 3:
-            data = self.data
+            return self.data
         # LZ4-compressed chunk.
         elif self.compression == 4:
             raise NotImplementedError("LZ4 decompression is not implemented.")
@@ -47,8 +47,6 @@ class Chunk:
             raise RuntimeError("Custom compression algorithms are not supported.")
         else:
             raise RuntimeError(f"Unknown compression scheme {self.compression}.")
-
-        return data
 
 
     def recompress_chunk(self, target_compression_type, compression_level):
