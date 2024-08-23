@@ -219,6 +219,7 @@ if __name__ == "__main__":
     general.add_argument("--disable-datetime-preservation",
                         help="Disable modified datetime preservation.",
                         action="store_true")
+
     # Compression.
     compression.add_argument("-s", "--compression-scheme",
                         default="zlib",
