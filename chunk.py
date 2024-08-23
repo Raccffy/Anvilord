@@ -39,7 +39,7 @@ class Chunk:
             data = zlib.decompress(self.data)
         # Uncompressed.
         elif self.compression == 3:
-            pass
+            data = self.data
         # LZ4-compressed chunk.
         elif self.compression == 4:
             raise NotImplementedError("LZ4 decompression is not implemented.")
