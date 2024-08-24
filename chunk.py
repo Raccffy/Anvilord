@@ -26,8 +26,10 @@ class Chunk:
 
 
     def calculate_sections(self):
-        # No math.ceil() involved!
-        return -(-len(self.data) // 4096)
+        # 1. No math.ceil() involved!
+        # 2. Compensating chunk header's length in region file.
+        chunk_length = len(self.data) + 5
+        return -(-chunk_length // 4096)
 
 
     def decompress_chunk(self):
