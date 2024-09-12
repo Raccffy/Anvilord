@@ -10,7 +10,7 @@ Anvilord is a tool for lossless Minecraft world compression.
 
 ## How?
 
-Region files is basically a chunk container. Every single chunk is compressed in order to save hard disk space. Of course, world saving needs to be done quickly or it will take a very long time.
+Region files are basically chunk containers. Every single chunk is compressed in order to save hard disk space. Of course, world saving needs to be done quickly or it will take a very long time.
 
 You **can't** squash region file size using in-game options. Yes, you can [optimize](https://minecraft.wiki/w/World_Options), but this is useful for world updates only. That's why *Anvilord* was created. This iron-clad lord takes region files from your world, smashes them on his trusty anvil, squashes chunks with its strong hands and builds regions back. This process is completely *lossless*.
 
