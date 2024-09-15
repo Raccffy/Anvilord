@@ -13,7 +13,7 @@ import zopfli
 import region
 
 __author__ = "Raccffy"
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 
 def search_for_region_folders(path):
