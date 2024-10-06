@@ -6,6 +6,7 @@ import os
 import argparse
 import time
 import datetime
+import gzip
 import zipfile
 
 import zopfli
@@ -138,11 +139,23 @@ def squash_region_file():
 
 def write_everything_but_region():
     for i, path in enumerate(files):
+        gzipped = False
+
         if args.verbose:
             print(f'Packing "{path}"...')
 
         with open(path, "rb") as f:
-            d = f.read()
+            if not args.disable_gzip_data_recompression:
+                magic = f.read(2)
+                f.seek(0)
+                d = f.read()
+                # Check if current file was gzipped.
+                if magic == b"\x1f\x8b":
+                    if args.verbose:
+                        print("File is gzipped. Recompressing.")
+                    gzipped = True
+            else:
+                d = f.read()
 
         if not args.disable_datetime_preservation:
             date_time = os.path.getmtime(path)
@@ -150,6 +163,23 @@ def write_everything_but_region():
             infoobj = zipfile.ZipInfo(path, date_time=date_time)
         else:
             infoobj = zipfile.ZipInfo(path)
+
+        if gzipped:
+            try:
+                d_decompressed = gzip.decompress(d)
+            except gzip.BadGzipFile as e:
+                if args.verbose:
+                    print(f'Failed to decompress: "{e}"')
+                gzipped = False
+
+        if gzipped and args.zopfli_chunk:
+            cobj = zopfli.ZopfliCompressor(zopfli.ZOPFLI_FORMAT_GZIP,
+                                           iterations=args.zopfli_iterations,
+                                           block_splitting=not args.zopfli_disable_block_splitting,
+                                           block_splitting_max=args.zopfli_block_splitting_max)
+            d = cobj.compress(d_decompressed) + cobj.flush()
+        elif gzipped and not args.zopfli_chunk:
+            d = gzip.compress(d_decompressed, compresslevel=args.compression_level)
 
         # This forces Zopfli to compress files instead of storing them.
         infoobj.compress_type = 8
@@ -219,6 +249,9 @@ if __name__ == "__main__":
     general.add_argument("--disable-datetime-preservation",
                         help="Disable modified datetime preservation.",
                         action="store_true")
+    general.add_argument("--disable-gzip-data-recompression",
+                        help="Disable recompression of GZip data. (e.g. level data, maps, scoreboards)",
+                        action="store_true")
 
     # Compression.
     compression.add_argument("-s", "--compression-scheme",
@@ -231,8 +264,11 @@ if __name__ == "__main__":
                         default=9,
                         choices=range(1, 10),
                         help="Set compression level for reference tools. Default: 9.")
-    compression.add_argument("-z", "--zopfli-chunk",
+    compression.add_argument("--zopfli-chunk",
                         help="Use Zopfli to compress Minecraft chunks. Brutally slower, but more effective.",
+                        action="store_true")
+    compression.add_argument("--zopfli-gzip",
+                        help="Use Zopfli to compress GZip data.",
                         action="store_true")
     compression.add_argument("--zopfli-output",
                         help="Use Zopfli to compress ZIP output.",
