@@ -6,6 +6,8 @@ Anvilord is a tool for lossless Minecraft world compression.
 
 - Handles a wide range of versions. Starting with Beta 1.3 and ending with the latest snapshot;
 - Ability to recompress chunks using [GZip](https://en.wikipedia.org/wiki/Gzip), [zlib](https://en.wikipedia.org/wiki/Zlib) and uncompressed (1.15.1+ only) schemes;
+- Recompresses GZip-compressed data, such as scoreboards, player data, etc.
+- Minifies JSON data, such as player's advancements;
 - Includes [Zopfli, state of the art Deflate compression,](https://developers.googleblog.com/en/compress-data-more-densely-with-zopfli) for even smaller world size.
 
 ## How?
@@ -33,8 +35,10 @@ Download, extract and run binary from [Releases](https://github.com/Raccffy/Anvi
 ```
 usage: Anvilord [-h] -w WORLD -o OUTPUT [-v] [--version] [--disable-quick-compression]
                 [--disable-region-integrity] [--disable-datetime-preservation]
-                [-s {gzip,zlib,uncompressed}] [-c {1,2,3,4,5,6,7,8,9}] [-z] [--zopfli-output]
-                [--zopfli-iterations ZOPFLI_ITERATIONS] [--zopfli-disable-block-splitting]
+                [--disable-gzip-data-recompression] [--disable-json-data-minification]
+                [-s {gzip,zlib,uncompressed}] [-c {1,2,3,4,5,6,7,8,9}] [--zopfli-chunk]
+                [--zopfli-gzip] [--zopfli-output] [--zopfli-iterations ZOPFLI_ITERATIONS]
+                [--zopfli-disable-block-splitting]
                 [--zopfli-block-splitting-max ZOPFLI_BLOCK_SPLITTING_MAX]
 
 Lossless Minecraft world compression.
@@ -55,6 +59,10 @@ General:
                         Disable quick region file integrity check.
   --disable-datetime-preservation
                         Disable modified datetime preservation.
+  --disable-gzip-data-recompression
+                        Disable recompression of GZip data. (e.g. level data, maps, scoreboards)
+  --disable-json-data-minification
+                        Disable JSON data minification.
 
 Compression:
   -s {gzip,zlib,uncompressed}, --compression-scheme {gzip,zlib,uncompressed}
@@ -62,8 +70,9 @@ Compression:
                         supported for Minecraft 1.15.1+ only.
   -c {1,2,3,4,5,6,7,8,9}, --compression-level {1,2,3,4,5,6,7,8,9}
                         Set compression level for reference tools. Default: 9.
-  -z, --zopfli-chunk    Use Zopfli to compress Minecraft chunks. Brutally slower, but more
+  --zopfli-chunk        Use Zopfli to compress Minecraft chunks. Brutally slower, but more
                         effective.
+  --zopfli-gzip         Use Zopfli to compress GZip data.
   --zopfli-output       Use Zopfli to compress ZIP output.
   --zopfli-iterations ZOPFLI_ITERATIONS
                         Set Zopfli iteration count. Default: 15.
