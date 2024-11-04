@@ -7,6 +7,7 @@ import argparse
 import time
 import datetime
 import gzip
+import json
 import zipfile
 
 import zopfli
@@ -145,7 +146,8 @@ def write_everything_but_region():
             print(f'Packing "{path}"...')
 
         with open(path, "rb") as f:
-            if not args.disable_gzip_data_recompression:
+            if (not args.disable_gzip_data_recompression
+                and not path.endswith(".json")):
                 magic = f.read(2)
                 f.seek(0)
                 d = f.read()
@@ -154,6 +156,17 @@ def write_everything_but_region():
                     if args.verbose:
                         print("File is gzipped. Recompressing.")
                     gzipped = True
+            elif (not args.disable_json_data_minification
+                  and path.endswith(".json")):
+                d = f.read()
+
+                try:
+                    d_jsoned = json.loads(d)
+                except json.JSONDecodeError as e:
+                    if args.verbose:
+                        print(f'Cannot read JSON file: "{e}"')
+
+                d = json.dumps(d_jsoned, separators=(",", ":"))
             else:
                 d = f.read()
 
@@ -251,6 +264,9 @@ if __name__ == "__main__":
                         action="store_true")
     general.add_argument("--disable-gzip-data-recompression",
                         help="Disable recompression of GZip data. (e.g. level data, maps, scoreboards)",
+                        action="store_true")
+    general.add_argument("--disable-json-data-minification",
+                        help="Disable JSON data minification.",
                         action="store_true")
 
     # Compression.
