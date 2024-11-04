@@ -4,10 +4,10 @@ Anvilord is a tool for lossless Minecraft world compression.
 
 ## Features
 
-- Handles a wide range of versions. Starting with Beta 1.3 and ending with the latest snapshot;
-- Ability to recompress chunks using [GZip](https://en.wikipedia.org/wiki/Gzip), [zlib](https://en.wikipedia.org/wiki/Zlib) and uncompressed (1.15.1+ only) schemes;
+- Handles a wide range of versions. Starting with Beta 1.3 and ending with the latest snapshot.
+- Ability to recompress chunks using [GZip](https://en.wikipedia.org/wiki/Gzip), [zlib](https://en.wikipedia.org/wiki/Zlib) and uncompressed (1.15.1+ only) schemes.
 - Recompresses GZip-compressed data, such as scoreboards, player data, etc.
-- Minifies JSON data, such as player's advancements;
+- Minifies JSON data, such as player's advancements.
 - Includes [Zopfli, state of the art Deflate compression,](https://developers.googleblog.com/en/compress-data-more-densely-with-zopfli) for even smaller world size.
 
 ## How?
@@ -26,8 +26,8 @@ Download, extract and run binary from [Releases](https://github.com/Raccffy/Anvi
 
 ### With Python
 
-1. Install Python 3.8 or higher, download project's source code and extract it;
-2. Open Terminal, go to the extracted folder and install project requirements: `pip install -r requirements.txt`;
+1. Install Python 3.8 or higher, download project's source code and extract it.
+2. Open Terminal, go to the extracted folder and install project requirements: `pip install -r requirements.txt`.
 3. Run "anvilord.py".
 
 ## Usage
