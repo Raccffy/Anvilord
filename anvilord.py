@@ -194,10 +194,18 @@ def write_everything_but_region():
         # This forces Zopfli to compress files instead of storing them.
         infoobj.compress_type = 8
 
-        arc.writestr(infoobj,
-                     d,
-                     compress_type=zipfile.ZIP_DEFLATED,
-                     compresslevel=args.compression_level)
+        # Because gzipped files are already compressed, we don't want to
+        # compress them once again with Deflate.
+        if not gzipped:
+            arc.writestr(infoobj,
+                         d,
+                         compress_type=zipfile.ZIP_DEFLATED,
+                         compresslevel=args.compression_level)
+        else:
+            arc.writestr(infoobj,
+                         d,
+                         compress_type=zipfile.ZIP_STORED,
+                         compresslevel=0)
 
 
 def calculate_chunk_sections(x):
