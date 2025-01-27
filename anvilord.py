@@ -12,11 +12,8 @@ import zipfile
 
 import zopfli
 
+from __version__ import __version__
 import region
-
-__author__ = "Raccffy"
-__version__ = "1.2.0"
-
 
 def search_for_region_folders(path):
     contents = os.listdir(path)
